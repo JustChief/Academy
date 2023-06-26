@@ -13,7 +13,8 @@ Ran the following nmap scan
 	`nmap -sS -A -O -T4 192.168.1.*`
 
 We ran an nmap scan for open ports and services
-![](nmap%20scan.png)
+
+<img width="562" alt="nmap scan" src="https://github.com/JustChief/Academy/assets/14989943/ca33ce22-a15b-4ab3-a0b4-50fa75ca2b8d">
 
 Target Box Details
 	IP
@@ -33,13 +34,16 @@ Findings
 
 Port 21 allowed anonymous log in. We found a 'note.txt' and downloaded it to our attack box. It contained a message to Heath. Key notes, it contained student credentials a test website for a new academy.
 
-![](anonymous%20login%20via%20ftp.png)
+<img width="1131" alt="anonymous login via ftp" src="https://github.com/JustChief/Academy/assets/14989943/d526eb73-1b46-4aea-a5f2-816dd56e7c3c">
 
-![](get%20note.txt%20via%20ftp.png)
-![](note.txt.png)
+<img width="1131" alt="get note txt via ftp" src="https://github.com/JustChief/Academy/assets/14989943/03e76e49-3d46-42d4-97b3-33635e19d424">
+
+<img width="1131" alt="note txt" src="https://github.com/JustChief/Academy/assets/14989943/71895c4c-8cdc-46af-88b7-202cb4e89ee7">
 
 Port 80 gave us an Apache Default Page via web browser. This reveals a lot of  information about the architecture. Attempted to navigate to a page that didn't exist and received a 404 error, however it provided the server version.
-![](apache%20default%20webpage.png)
+
+<img width="1131" alt="apache default webpage" src="https://github.com/JustChief/Academy/assets/14989943/2bf62500-6628-4c47-9092-ced9eebd5531">
+
 
 Since the note we found earlier indicated there was a website, and port 80 served up an Apache server, we decided to conduct directory discovery. A variety of tools can be used for directory discovery.
 	Dirbuster
@@ -47,22 +51,24 @@ Since the note we found earlier indicated there was a website, and port 80 serve
 	DIRB
 
 Dirbuster
-![](dirbuster%20directory%20listing.png)
+
+<img width="772" alt="dirbuster directory listing" src="https://github.com/JustChief/Academy/assets/14989943/fbd35332-3986-4187-981f-d40d3766ae09">
 
 Point of interest: /academy/index.php brought up a login screen. I used the credentials found in the note.txt to log in. I used an online hash cracker to decode the hash
 	StudentRegno: 10201321
 	password: cd73502828457d15655bbd7a63fb0bc8
 	Cracked Password: 'student'
 #tip kali has a built in hash-identifier
-![](student%20login%20screen.png)
-
-![](student%20profile.png)
+<img width="1131" alt="student login screen" src="https://github.com/JustChief/Academy/assets/14989943/2958481e-13de-453b-902a-8697ea42dc7e">
+<img width="840" alt="student profile" src="https://github.com/JustChief/Academy/assets/14989943/87275b9f-0b48-4f45-aa9d-3863d9cc7beb">
 
 ffuf
 #tip pipe results to a text file for comparison
-![](ffuf%20directory%20listing%20results.png)
+<img width="875" alt="ffuf directory listing results" src="https://github.com/JustChief/Academy/assets/14989943/b9f2f115-0e3a-432d-8b50-711a46a9527b">
+
 Dirb
-![](dirb%20directory%20listing%20results.png)
+
+<img width="875" alt="dirb directory listing results" src="https://github.com/JustChief/Academy/assets/14989943/64518fe3-0f6e-4739-b698-a192b72d0fab">
 
 # Exploitation
 
@@ -75,11 +81,10 @@ Steps
 	4. Upload the saved php-reverse-shell script to website
 	5. Shell is established
 
-
-![](php-reverse-shell.php%20file%20upload.png)
+<img width="423" alt="php-reverse-shell php file upload" src="https://github.com/JustChief/Academy/assets/14989943/255ed12f-86b4-42c3-8722-90daa6e3de34">
 
 The shell was established as the user www-data. We tried to find sudo user, but could not locate it.
-![](netcat%20listener.png)
+<img width="700" alt="netcat listener" src="https://github.com/JustChief/Academy/assets/14989943/868eb754-9e8e-4047-879c-39c2ed99c3ec">
 
 # Privilege escalation
 After exploiting the box, we began working towards escalating our privileges. To do this, we used LinPEAS (Linux Privilege Escalation Awesome Script. 
@@ -88,18 +93,17 @@ Steps
 	1. Using the previously established shell, download linpeas.sh into the /tmp folder of the target box
 	2. Change permissions to an executable
 	3. Execute
-![](linpeas%20upload.png)
+
+<img width="693" alt="linpeas upload" src="https://github.com/JustChief/Academy/assets/14989943/9dfd5aea-8499-40ef-ab93-a1d8711e87a5">
 
 LinPEAS returned the following key location, a username and password for that user
-
-![](poi%20important%20config%20file%20for%20mysql%20db%20with%20password%20listed.png)
+<img width="986" alt="poi important config file for mysql db with password listed" src="https://github.com/JustChief/Academy/assets/14989943/398edbf0-228d-4d95-97b3-4a7edfd31a6e">
 
 Taking note of this, we also decided to explore the /etc/passwd file. The final entry was 'grimmie', the same user previously found. The /etc/passwd file showed that this user had administrator privileges as well.
-![](-etc-passwd%20file.png)
+<img width="725" alt="-etc-passwd file" src="https://github.com/JustChief/Academy/assets/14989943/20a79f1e-7da2-4986-843c-e0cb2f6197ff">
 
 We ssh'd into grimmie's account with previously found credentials
-
-![](ssh%20login%20for%20grimmie.png)
+<img width="649" alt="ssh login for grimmie" src="https://github.com/JustChief/Academy/assets/14989943/ffb02d10-853a-4442-a3ba-197640052ed0">
 
 #tip commands to try in here,
 	`sudo -l`
@@ -109,7 +113,9 @@ We ssh'd into grimmie's account with previously found credentials
 # Post Exploitation
 
 Once logged in, we found a file called backup.sh.
-![](backup.sh%20file.png)
+
+<img width="438" alt="backup sh file" src="https://github.com/JustChief/Academy/assets/14989943/90dc5e57-921a-4de4-8211-8ff4ddd31f0c">
+
 File explained
 1. Remove /tmp/backup file
 2. perform a backup for the website, and compress into a zip folder 
@@ -123,12 +129,14 @@ For this box, we used a tool called pspy
 	Link: https://github.com/DominicBreuker/pspy
 
 We confirmed our findings that the backups run every minute (every minute since it is ctf style)
-![](backup%20process%20running%20every%20minute.png)
+<img width="694" alt="backup process running every minute" src="https://github.com/JustChief/Academy/assets/14989943/ed591a35-8ae7-44ab-9817-a2f129e7fcdd">
+
 
 We further exploited this by setting up a reverse shell by using a one-liner and pasting it into the backup.sh. We did this because the file was already on the system. 
 	Reverse-shell
 	Link: https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+<img width="458" alt="reverse shell one liner" src="https://github.com/JustChief/Academy/assets/14989943/cbba448c-bc5f-45d9-8b8d-a3c92761d975">
 
-![](reverse%20shell%20one%20liner.png)
 We set up a netcat listener and executed the reverse shell via the backup.sh script. At this point, we achieved root privileges once the reverse shell executed. We captured the flag and exposed the contents of flag.txt as root.
-![](achieved%20root%20access.png)
+<img width="645" alt="achieved root access" src="https://github.com/JustChief/Academy/assets/14989943/7bdff6c2-9563-4686-8a40-eee4c48cf7ef">
+
