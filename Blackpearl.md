@@ -49,6 +49,7 @@ I found the default page to an nginx server
 <img width="590" alt="default nginx server page" src="https://github.com/JustChief/Write-ups/assets/14989943/3d406d73-0f02-4648-b5a8-4270190e8d05">
 
 Viewing the page source, I found a commented out note: <!-- Webmaster: alek@blackpearl.tcm -->
+
 <img width="589" alt="page source for nginx - information disclosure" src="https://github.com/JustChief/Write-ups/assets/14989943/04b24924-30fe-43fa-8a00-d6ec0f2eadad">
 
 Directory Busting
