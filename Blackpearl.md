@@ -45,6 +45,7 @@ Nmap done: 1 IP address (1 host up) scanned in 24.11 seconds
 ```
 Port 80
 I found the default page to an nginx server
+
 <img width="590" alt="default nginx server page" src="https://github.com/JustChief/Write-ups/assets/14989943/3d406d73-0f02-4648-b5a8-4270190e8d05">
 
 Viewing the page source, I found a commented out note: <!-- Webmaster: alek@blackpearl.tcm -->
@@ -67,6 +68,7 @@ Exploring port 53, we did a dns recon
 <img width="786" alt="dns recon blackpearl tcm" src="https://github.com/JustChief/Write-ups/assets/14989943/2de9c734-3163-426c-997b-262d1a232f99">
 
 This indicated there is a dns record pointing to blackpearl.tcm. In order for me to get to that location, I needed to add the IP address to my /etc/hosts file
+
 <img width="786" alt="adding blackpearl tcm to etc-hosts" src="https://github.com/JustChief/Write-ups/assets/14989943/60769c97-3b2c-40d1-b523-0bcdff88ad60">
 
 So when I navigate to blackpearl.tcm, I get a live link to a default PHP page
